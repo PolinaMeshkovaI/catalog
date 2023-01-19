@@ -120,7 +120,7 @@ import colors from '../data/colors';
         currentPriceFrom: 0,
         currentPriceTo: 0,
         currentCategoryId: 0,
-        currentColorID: 0,
+        currentColorId: 0,
       }
     },
     props: ['priceFrom', 'priceTo', 'categoryId', 'colorId'],
@@ -143,7 +143,7 @@ import colors from '../data/colors';
         this.currentCategoryId = value;
       },
       colorId(value){
-        this.currentColorID = value;
+        this.currentColorId = value;
       },
     },
     methods: {

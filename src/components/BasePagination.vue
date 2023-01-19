@@ -54,7 +54,7 @@ export default {
       }
     },
     nextPage(page) {
-      if (page < this.count) {
+      if (page < this.pages) {
         this.$emit('paginate', page + 1);
       }
     },
