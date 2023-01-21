@@ -61,7 +61,7 @@ export default [
     image: '/img/apple.png',
     id: 8,
     categoryId: 1,
-    colorId: [2, 4, 5]
+    colorId: [2, 4, 5],
   },
   {
     title: 'Cнегоход Ski-doo',

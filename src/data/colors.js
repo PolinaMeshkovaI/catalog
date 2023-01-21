@@ -27,4 +27,4 @@ export default [
     id: 7,
     colorNumber: '#000',
   },
-]
+];

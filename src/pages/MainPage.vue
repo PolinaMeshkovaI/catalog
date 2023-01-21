@@ -27,7 +27,7 @@
 import products from '@/data/products';
 import ProductList from '@/components/ProductList.vue';
 import BasePagination from '@/components/BasePagination.vue';
-import ProductFilter from '@/components/ProductFilter.vue'
+import ProductFilter from '@/components/ProductFilter.vue';
 
 export default {
   components: { ProductList, BasePagination, ProductFilter },
@@ -40,37 +40,37 @@ export default {
 
       page: 1,
       productsPerPage: 3,
-    }
+    };
   },
   computed: {
-    filteredProducts(){
+    filteredProducts() {
       let filteredProducts = products;
 
-      if(this.filterPriceFrom > 0) {
-        filteredProducts = filteredProducts.filter(product => product.price > this.filterPriceFrom);
+      if (this.filterPriceFrom > 0) {
+        filteredProducts = filteredProducts.filter((product) => product.price > this.filterPriceFrom);
       }
 
-      if(this.filterPriceTo > 0) {
-        filteredProducts = filteredProducts.filter(product => product.price < this.filterPriceTo);
+      if (this.filterPriceTo > 0) {
+        filteredProducts = filteredProducts.filter((product) => product.price < this.filterPriceTo);
       }
 
-      if(this.filterCategoryId) {
-        filteredProducts = filteredProducts.filter(product => product.categoryId === this.filterCategoryId);
+      if (this.filterCategoryId) {
+        filteredProducts = filteredProducts.filter((product) => product.categoryId === this.filterCategoryId);
       }
 
-      if(this.filterColorId) {
-        filteredProducts = filteredProducts.filter(product => product.colorId.includes(this.filterColorId));
+      if (this.filterColorId) {
+        filteredProducts = filteredProducts.filter((product) => product.colorId.includes(this.filterColorId));
       }
 
       return filteredProducts;
     },
-    products(){
+    products() {
       const offset = (this.page - 1) * this.productsPerPage;
       return this.filteredProducts.slice(offset, offset + this.productsPerPage);
     },
     countProducts() {
-    return products.length;
-    }
+      return products.length;
+    },
   },
 };
 </script>
