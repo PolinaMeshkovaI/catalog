@@ -22,6 +22,16 @@ export default new Vuex.Store({
           amount,
         });
       }
+    },
+    updateCartProductAmount(state, {productId, amount}){
+      const item = state.cartProducts.find(item => item.productId === productId);
+
+      if(item){
+        item.amount = amount;
+      }
+    },
+    deliteCartProduct(state, productId){
+      state.cartProducts = state.cartProducts.filter(item => item.productId !== productId);
     }
   },
   getters: {
@@ -34,7 +44,7 @@ export default new Vuex.Store({
       });
     },
     cartTotalPrice(state, getters){
-      return getters.cartDetailProducts.reduce((acc, item) => (item.product.price * item.amount) + acc, 0 );
+      return getters.cartDetailProducts.reduce((acc, item) => (item.product.price * item.amount) + acc, 0);
     }
   },
 
