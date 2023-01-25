@@ -59,5 +59,4 @@ export default {
     ...mapMutations({deliteProduct: 'deliteCartProduct'}),
   }
 }
-
 </script>

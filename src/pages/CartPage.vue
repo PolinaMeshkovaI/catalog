@@ -18,7 +18,7 @@
         Корзина
       </h1>
       <span class="content__info">
-        3 товара
+       {{$store.state.cartProducts.length}} {{ $store.state.cartProducts.length, ['товар', 'товара', 'товаров'] | wordDeclension }}
       </span>
     </div>
 
@@ -52,9 +52,10 @@
 import numberFormat from '@/helpers/numberFormat';
 import { mapGetters } from 'vuex';
 import CartItem from '@/components/CartItem';
+import wordDeclension from '@/helpers/wordDeclension';
 
 export default {
-  filters: {numberFormat},
+  filters: {numberFormat, wordDeclension},
   components: { CartItem },
   computed: {
     ...mapGetters({products: 'cartDetailProducts', totalPrice: 'cartTotalPrice'}),
