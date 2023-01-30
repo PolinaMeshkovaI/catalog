@@ -26,6 +26,10 @@
       <form class="cart__form form" action="#" method="POST">
         <div class="cart__field">
           <ul class="cart__list">
+
+          <div class="loader" v-if="$store.state.cartLoading"></div>
+          <div v-if="$store.state.cartLoadingFailed">Произошла ошибка при загрузке товаров</div>
+
             <CartItem v-for="item in products" :key="item.productId" :item="item"/>
 
           </ul>

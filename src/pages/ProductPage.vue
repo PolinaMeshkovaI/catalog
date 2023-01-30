@@ -1,5 +1,7 @@
 <template>
-<main class="content container">
+<main class="content container" v-if="productLoading">Идет загрузка...</main>
+<main class="content container" v-else-if="!productData">Не удалось загрузить информацию о товаре</main>
+<main class="content container" v-else="productData">
     <div class="content__top">
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
@@ -23,7 +25,7 @@
     <section class="item">
       <div class="item__pics pics">
         <div class="pics__wrapper">
-          <img width="570" height="570" :src="product.image" :alt="product.title">
+          <img width="570" height="570" :src="product.image.file.url" :alt="product.title">
         </div>
       </div>
 
@@ -96,21 +98,7 @@
             </fieldset>
 
             <div class="item__row">
-              <div class="form__counter">
-                <button type="button" aria-label="Убрать один товар" @click.prevent="deleteCountProduct">
-                  <svg width="12" height="12" fill="currentColor">
-                    <use xlink:href="#icon-minus"></use>
-                  </svg>
-                </button>
-
-                <input type="text" v-model.number="productAmount">
-
-                <button type="button" aria-label="Добавить один товар" @click.prevent="addCountProduct">
-                  <svg width="12" height="12" fill="currentColor">
-                    <use xlink:href="#icon-plus"></use>
-                  </svg>
-                </button>
-              </div>
+              <BaseCounter :count="productAmount"></BaseCounter>
 
               <button class="button button--primery" type="submit">
                 В корзину
@@ -175,26 +163,43 @@
 </template>
 
 <script>
-import products from '@/data/products';
-import categories from '@/data/categories';
+import BaseCounter from '@/components/BaseCounter';
 import gotoPage from '@/helpers/gotoPage';
 import numberFormat from '@/helpers/numberFormat';
+import {API_BASE_URL} from '@/config';
+import axios from 'axios';
 
 export default {
   data(){
     return {
       productAmount: 1,
+
+      productData: null,
+      productLoading: false,
+      productLoadingFailed: false,
+
     }
   },
+  components: { BaseCounter },
   filters: {
     numberFormat,
   },
   computed: {
     product() {
-      return products.find((product) => product.id === +this.$route.params.id);
+      return this.productData;
+    },
+   products() {
+      return this.productsData
+       ? this.productsData.items.map(product =>{
+          return {
+           ...product,
+           image: product.image.file.url,
+          }
+       })
+       : [];
     },
     category() {
-      return categories.find((category) => category.id === this.product.categoryId);
+      return this.productData.category;
     },
   },
   methods: {
@@ -205,12 +210,22 @@ export default {
         {productId: this.product.id, amount: this.productAmount}
       );
     },
-    addCountProduct(){
-      this.productAmount = ++this.productAmount;
+    loadProduct(){
+      this.productLoading = true;
+      this.productLoadingFailed = false;
+      axios.get(API_BASE_URL + `/api/products/` + this.$route.params.id)
+        .then(response => this.productData = response.data)
+        .catch(() => this.productLoadingFailed = true)
+        .then(() => this.productLoading = false);
     },
-    deleteCountProduct(){
-      (this.productAmount > 0)? this.productAmount = --this.productAmount : this.productAmount = 0;
-    }
   },
+  watch: {
+    '$route.params.id': {
+      handler(){
+         this.loadProduct();
+      },
+      immediate: true
+    }
+  }
 };
 </script>
