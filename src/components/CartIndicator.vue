@@ -11,7 +11,6 @@
         <span class="header__count" width="30" height="21" aria-label="Количество товаров">
         <div v-if="!$store.state.cartLoading">{{ $store.state.cartProducts.length }}</div>
            <div v-if="$store.state.cartLoading"><img src="/img/loader.gif"></div>
-
         </span>
       </router-link>
 </template>
