@@ -87,21 +87,9 @@
           </div>
         </div>
 
+
         <div class="cart__block">
-          <div v-if="$store.state.cartLoading" style="text-align: center"><img src="/img/loader_order.gif"></div>
-
-          <ul class="cart__orders">
-            <li class="cart__order" v-for="item in products" :key="item.productId">
-              <h3>{{ item.product.title }}</h3>
-              <b>  {{ item.product.price * item.amount | numberFormat }}₽</b>
-              <span>Артикул: {{item.product.id}}</span>
-            </li>
-          </ul>
-
-          <div class="cart__total">
-            <p>Доставка: <b>500 ₽</b></p>
-            <p>Итого: <b>{{ products.length}}</b> товара на сумму <b>{{ totalPrice | numberFormat}} ₽</b></p>
-          </div>
+          <OrderInfo></OrderInfo>
 
           <button class="cart__button button button--primery" type="submit">
             Оформить заказ
@@ -125,8 +113,8 @@ import BaseFormTextarea from '@/components/BaseFormTextarea';
 import numberFormat from '@/helpers/numberFormat';
 import wordDeclension from '@/helpers/wordDeclension';
 import { API_BASE_URL } from '@/config';
-import { mapGetters } from 'vuex';
 import axios from 'axios';
+import OrderInfo from '@/components/OrderInfo';
 
   export default {
     data(){
@@ -137,11 +125,9 @@ import axios from 'axios';
         formErrorMessage: '',
       }
     },
-    components: { BaseFormText, BaseFormTextarea },
+    components: { BaseFormText, BaseFormTextarea, OrderInfo },
     filters: { numberFormat, wordDeclension },
-    computed:{
-    ...mapGetters({products: 'cartDetailProducts', totalPrice: 'cartTotalPrice', amountProducts: 'cartAmountProducts'})
-    },
+
     methods: {
       order(){
         this.formError = {};
@@ -156,7 +142,9 @@ import axios from 'axios';
               }
           })
           .then(response => {
-            this.$store.commit('resetCart')
+            this.$store.commit('resetCart');
+            this.$store.commit('updateOrderInfo', response.data);
+            this.$router.push({name: 'orderInfo', params: {id: response.data.id}});
           })
           .catch(error => {
             this.formError = error.response.data.error.request || {};
