@@ -78,7 +78,7 @@
 
         <div class="cart__block">
 
-         <OrderInfo></OrderInfo>
+         <OrderInfo :products='this.$store.state.orderInfo.basket.items' :total-price='this.$store.state.orderInfo.totalPrice'></OrderInfo>
 
         </div>
       </form>

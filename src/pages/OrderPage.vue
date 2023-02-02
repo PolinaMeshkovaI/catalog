@@ -89,7 +89,7 @@
 
 
         <div class="cart__block">
-          <OrderInfo></OrderInfo>
+          <OrderInfo :products='this.$store.state.cartProductsData' :total-price='this.$store.getters.cartTotalPrice'></OrderInfo>
 
           <button class="cart__button button button--primery" type="submit">
             Оформить заказ
